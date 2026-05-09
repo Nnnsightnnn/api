@@ -94,7 +94,7 @@ footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--rul
 <h2>Available trackers</h2>
 
 <div class="tracker-block">
-  <h3>Liverpool FC <span class="badge badge-planned">Rolling out</span></h3>
+  <h3>Liverpool FC <span class="badge badge-live">Live</span></h3>
   <p class="meta">Premier League · <a href="https://nnnsightnnn.github.io/liverpool-tracker/">site</a> · <a href="https://github.com/Nnnsightnnn/liverpool-tracker">repo</a></p>
   <table>
     <thead><tr><th>Endpoint</th><th>Returns</th></tr></thead>
@@ -111,7 +111,7 @@ footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--rul
 </div>
 
 <div class="tracker-block">
-  <h3>Atlanta Hawks <span class="badge badge-planned">Rolling out</span></h3>
+  <h3>Atlanta Hawks <span class="badge badge-live">Live</span></h3>
   <p class="meta">NBA · <a href="https://nnnsightnnn.github.io/hawks-tracker/">site</a> · <a href="https://github.com/Nnnsightnnn/hawks-tracker">repo</a></p>
   <table>
     <thead><tr><th>Endpoint</th><th>Returns</th></tr></thead>
@@ -127,7 +127,7 @@ footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--rul
 </div>
 
 <div class="tracker-block">
-  <h3>Atlanta Falcons <span class="badge badge-planned">Rolling out</span></h3>
+  <h3>Atlanta Falcons <span class="badge badge-live">Live</span></h3>
   <p class="meta">NFL · <a href="https://nnnsightnnn.github.io/falcons-tracker/">site</a> · <a href="https://github.com/Nnnsightnnn/falcons-tracker">repo</a></p>
   <table>
     <thead><tr><th>Endpoint</th><th>Returns</th></tr></thead>
@@ -136,13 +136,14 @@ footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--rul
       <tr><td><code>/falcons-tracker/api/v1/news-digest.json</code></td><td>Curated news rollup</td></tr>
       <tr><td><code>/falcons-tracker/api/v1/draft.json</code></td><td>Current draft picks and board</td></tr>
       <tr><td><code>/falcons-tracker/api/v1/calendar.json</code></td><td>Offseason calendar</td></tr>
+      <tr><td><code>/falcons-tracker/api/v1/next-game.json</code></td><td>Next game (if scheduled)</td></tr>
       <tr><td><code>/falcons-tracker/api/v1/index.json</code></td><td>Manifest</td></tr>
     </tbody>
   </table>
 </div>
 
 <div class="tracker-block">
-  <h3>Atlanta Braves <span class="badge badge-planned">Rolling out</span></h3>
+  <h3>Atlanta Braves <span class="badge badge-live">Live</span></h3>
   <p class="meta">MLB · <a href="https://nnnsightnnn.github.io/braves-tracker/">site</a> · <a href="https://github.com/Nnnsightnnn/braves-tracker">repo</a></p>
   <table>
     <thead><tr><th>Endpoint</th><th>Returns</th></tr></thead>
@@ -151,7 +152,8 @@ footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--rul
       <tr><td><code>/braves-tracker/api/v1/news-digest.json</code></td><td>Curated news rollup</td></tr>
       <tr><td><code>/braves-tracker/api/v1/results.json</code></td><td>Recent results</td></tr>
       <tr><td><code>/braves-tracker/api/v1/next-game.json</code></td><td>Next scheduled game</td></tr>
-      <tr><td><code>/braves-tracker/api/v1/standings.json</code></td><td>Division standings</td></tr>
+      <tr><td><code>/braves-tracker/api/v1/standings.json</code></td><td>NL East standings</td></tr>
+      <tr><td><code>/braves-tracker/api/v1/upcoming-schedule.json</code></td><td>Next-N games on the schedule</td></tr>
       <tr><td><code>/braves-tracker/api/v1/index.json</code></td><td>Manifest</td></tr>
     </tbody>
   </table>
@@ -235,7 +237,8 @@ for ep in manifest["endpoints"]:
 <table>
   <thead><tr><th>Date</th><th>Tracker</th><th>Change</th></tr></thead>
   <tbody>
-    <tr><td>2026-05-09</td><td>—</td><td>Portal launched. Spec published; endpoints rolling out per tracker.</td></tr>
+    <tr><td>2026-05-09</td><td>liverpool, hawks, braves, falcons</td><td>All four trackers shipped <code>v1</code> endpoints. Plugin: <a href="https://github.com/Nnnsightnnn/tracker-shared/blob/main/vite-plugin-api-extract.js">tracker-shared/vite-plugin-api-extract.js</a>.</td></tr>
+    <tr><td>2026-05-09</td><td>—</td><td>Portal launched.</td></tr>
   </tbody>
 </table>
 
