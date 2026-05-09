@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nnnsightnnn — Tracker API Portal</title>
+<meta name="description" content="Public JSON data feeds from the nnnsightnnn tracker apps — Liverpool FC, Atlanta Falcons, Hawks, Braves. Best-effort, no SLA, no auth.">
+<meta property="og:title" content="nnnsightnnn — Tracker API Portal">
+<meta property="og:description" content="Public JSON data feeds from the nnnsightnnn tracker apps. Plug in or visit the site — both work.">
+<meta property="og:type" content="website">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --dim: #8b949e;
+  --link: #58a6ff;
+  --green: #3fb950;
+  --amber: #d29922;
+  --red: #f85149;
+  --code-bg: #010409;
+  --rule: #21262d;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+body { padding: 2rem 1rem 4rem; }
+.wrap { max-width: 880px; margin: 0 auto; }
+header { padding: 1rem 0 2rem; border-bottom: 1px solid var(--rule); margin-bottom: 2rem; }
+h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.01em; }
+h1 .accent { color: var(--link); }
+.tagline { color: var(--dim); font-size: 1rem; margin-top: 0.4rem; }
+h2 { font-size: 1.25rem; font-weight: 600; margin: 2.5rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule); }
+h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--text); }
+p { margin-bottom: 0.85rem; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.muted { color: var(--dim); font-size: 0.9rem; }
+ul { padding-left: 1.25rem; margin-bottom: 1rem; }
+li { margin-bottom: 0.3rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1rem; font-size: 0.92rem; }
+th, td { padding: 0.55rem 0.65rem; text-align: left; border-bottom: 1px solid var(--rule); }
+th { color: var(--dim); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; }
+code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.88em; background: var(--surface); padding: 0.1rem 0.4rem; border-radius: 4px; color: var(--text); }
+pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.85rem 1rem; overflow-x: auto; margin: 0.5rem 0 1.25rem; font-size: 0.85rem; line-height: 1.5; }
+pre code { background: none; padding: 0; font-size: inherit; }
+.badge { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; vertical-align: middle; }
+.badge-live { background: rgba(63, 185, 80, 0.15); color: var(--green); border: 1px solid rgba(63, 185, 80, 0.4); }
+.badge-planned { background: rgba(210, 153, 34, 0.15); color: var(--amber); border: 1px solid rgba(210, 153, 34, 0.4); }
+.badge-deprecated { background: rgba(248, 81, 73, 0.15); color: var(--red); border: 1px solid rgba(248, 81, 73, 0.4); }
+.tracker-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+.tracker-block h3 { margin-top: 0; display: flex; align-items: center; gap: 0.6rem; }
+.tracker-block .meta { color: var(--dim); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.tracker-block table { font-size: 0.85rem; }
+.disclaimer { background: rgba(210, 153, 34, 0.08); border: 1px solid rgba(210, 153, 34, 0.4); border-radius: 6px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+.disclaimer strong { color: var(--amber); }
+footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); color: var(--dim); font-size: 0.85rem; }
+@media (max-width: 600px) {
+  body { padding: 1rem 0.75rem 3rem; font-size: 15px; }
+  h1 { font-size: 1.4rem; }
+  pre { font-size: 0.78rem; }
+  table { font-size: 0.82rem; }
+  th, td { padding: 0.4rem 0.5rem; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1><span class="accent">nnnsightnnn</span> · Tracker API</h1>
+  <p class="tagline">Public JSON data feeds from the trackers. Plug in or visit the site &mdash; both work.</p>
+</header>
+
+<p>
+  Every <a href="https://github.com/Nnnsightnnn">nnnsightnnn</a> tracker app publishes its underlying data as flat JSON files alongside the website. No API key, no auth, CORS open. If you want squad lists, news digests, or upcoming-game data for Liverpool FC, the Atlanta Falcons, Hawks, or Braves — fetch and go.
+</p>
+
+<div class="disclaimer">
+  <strong>Stability:</strong> these are best-effort public data feeds. One developer running them as a side project. Schema-breaking changes get a 30-day notice in the changelog below and bump to <code>v2</code>; existing <code>v1</code> paths keep responding for at least 90 days. No uptime SLA. No support contract. If you build something serious on top of these, mirror them locally.
+</div>
+
+<h2>URL scheme</h2>
+<pre><code>https://nnnsightnnn.github.io/&lt;tracker&gt;/api/v1/&lt;resource&gt;.json</code></pre>
+<p class="muted">Each tracker exposes the same shape: a versioned <code>v1</code> path with one JSON file per resource. <code>index.json</code> is always the manifest — fetch that first to discover what's available and when it was last refreshed.</p>
+
+<h2>Available trackers</h2>
+
+<div class="tracker-block">
+  <h3>Liverpool FC <span class="badge badge-planned">Rolling out</span></h3>
+  <p class="meta">Premier League · <a href="https://nnnsightnnn.github.io/liverpool-tracker/">site</a> · <a href="https://github.com/Nnnsightnnn/liverpool-tracker">repo</a></p>
+  <table>
+    <thead><tr><th>Endpoint</th><th>Returns</th></tr></thead>
+    <tbody>
+      <tr><td><code>/liverpool-tracker/api/v1/squad.json</code></td><td>Squad with stats, status, injury notes</td></tr>
+      <tr><td><code>/liverpool-tracker/api/v1/news-digest.json</code></td><td>Curated news rollup with sources</td></tr>
+      <tr><td><code>/liverpool-tracker/api/v1/results.json</code></td><td>Recent results</td></tr>
+      <tr><td><code>/liverpool-tracker/api/v1/next-match.json</code></td><td>Next fixture</td></tr>
+      <tr><td><code>/liverpool-tracker/api/v1/standings.json</code></td><td>League table snapshot</td></tr>
+      <tr><td><code>/liverpool-tracker/api/v1/lineup.json</code></td><td>Predicted XI, formations, alternatives</td></tr>
+      <tr><td><code>/liverpool-tracker/api/v1/index.json</code></td><td>Manifest (commit SHA, last-updated, all endpoints)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="tracker-block">
+  <h3>Atlanta Hawks <span class="badge badge-planned">Rolling out</span></h3>
+  <p class="meta">NBA · <a href="https://nnnsightnnn.github.io/hawks-tracker/">site</a> · <a href="https://github.com/Nnnsightnnn/hawks-tracker">repo</a></p>
+  <table>
+    <thead><tr><th>Endpoint</th><th>Returns</th></tr></thead>
+    <tbody>
+      <tr><td><code>/hawks-tracker/api/v1/roster.json</code></td><td>Roster with stats and recent notes</td></tr>
+      <tr><td><code>/hawks-tracker/api/v1/news-digest.json</code></td><td>Curated news rollup</td></tr>
+      <tr><td><code>/hawks-tracker/api/v1/results.json</code></td><td>Recent results</td></tr>
+      <tr><td><code>/hawks-tracker/api/v1/next-game.json</code></td><td>Next scheduled game</td></tr>
+      <tr><td><code>/hawks-tracker/api/v1/playoff-series.json</code></td><td>Active playoff series state</td></tr>
+      <tr><td><code>/hawks-tracker/api/v1/index.json</code></td><td>Manifest</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="tracker-block">
+  <h3>Atlanta Falcons <span class="badge badge-planned">Rolling out</span></h3>
+  <p class="meta">NFL · <a href="https://nnnsightnnn.github.io/falcons-tracker/">site</a> · <a href="https://github.com/Nnnsightnnn/falcons-tracker">repo</a></p>
+  <table>
+    <thead><tr><th>Endpoint</th><th>Returns</th></tr></thead>
+    <tbody>
+      <tr><td><code>/falcons-tracker/api/v1/roster.json</code></td><td>Roster</td></tr>
+      <tr><td><code>/falcons-tracker/api/v1/news-digest.json</code></td><td>Curated news rollup</td></tr>
+      <tr><td><code>/falcons-tracker/api/v1/draft.json</code></td><td>Current draft picks and board</td></tr>
+      <tr><td><code>/falcons-tracker/api/v1/calendar.json</code></td><td>Offseason calendar</td></tr>
+      <tr><td><code>/falcons-tracker/api/v1/index.json</code></td><td>Manifest</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="tracker-block">
+  <h3>Atlanta Braves <span class="badge badge-planned">Rolling out</span></h3>
+  <p class="meta">MLB · <a href="https://nnnsightnnn.github.io/braves-tracker/">site</a> · <a href="https://github.com/Nnnsightnnn/braves-tracker">repo</a></p>
+  <table>
+    <thead><tr><th>Endpoint</th><th>Returns</th></tr></thead>
+    <tbody>
+      <tr><td><code>/braves-tracker/api/v1/roster.json</code></td><td>Roster</td></tr>
+      <tr><td><code>/braves-tracker/api/v1/news-digest.json</code></td><td>Curated news rollup</td></tr>
+      <tr><td><code>/braves-tracker/api/v1/results.json</code></td><td>Recent results</td></tr>
+      <tr><td><code>/braves-tracker/api/v1/next-game.json</code></td><td>Next scheduled game</td></tr>
+      <tr><td><code>/braves-tracker/api/v1/standings.json</code></td><td>Division standings</td></tr>
+      <tr><td><code>/braves-tracker/api/v1/index.json</code></td><td>Manifest</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>Sample payload — manifest</h2>
+<pre><code>{
+  "tracker": "liverpool",
+  "league": "EPL",
+  "team": { "name": "Liverpool FC", "abbreviation": "LIV" },
+  "version": "v1",
+  "generatedAt": "2026-05-03T13:35:40Z",
+  "commit": "f8687d3",
+  "endpoints": [
+    { "path": "/liverpool-tracker/api/v1/squad.json",       "resource": "squad",        "lastUpdated": "2026-05-03T13:35:40Z" },
+    { "path": "/liverpool-tracker/api/v1/news-digest.json", "resource": "news-digest",  "lastUpdated": "2026-05-03T13:35:40Z" },
+    { "path": "/liverpool-tracker/api/v1/lineup.json",      "resource": "lineup",       "lastUpdated": "2026-05-03T13:35:40Z" }
+  ]
+}</code></pre>
+
+<h2>Sample payload — squad / roster</h2>
+<pre><code>// First entry from /liverpool-tracker/api/v1/squad.json
+{
+  "id": 23,
+  "name": "Alexander Isak",
+  "number": 9,
+  "position": "FWD",
+  "nationality": "🇸🇪 Sweden",
+  "age": 26,
+  "appearances": 17,
+  "goals": 9,
+  "assists": 2,
+  "form": 7.7,
+  "status": "injured",
+  "outSince": "2026-05-03",
+  "injuryNote": "Suspected groin strain (Fri training)...",
+  "image": "https://resources.premierleague.com/.../p219168.png"
+}</code></pre>
+
+<h2>Sample payload — news digest</h2>
+<pre><code>// /liverpool-tracker/api/v1/news-digest.json
+{
+  "generatedAt": "2026-05-03T13:35:40Z",
+  "summary": "Sunday May 3 (matchday)...",
+  "keyTopics": [
+    {
+      "title": "BREAKING — Alexander Isak Ruled OUT...",
+      "summary": "...",
+      "sources": ["sky-sports", "daily-mail", "goal"]
+    }
+  ],
+  "sources": [...]
+}</code></pre>
+
+<h2>Quick start</h2>
+<pre><code>// JavaScript
+const res = await fetch("https://nnnsightnnn.github.io/liverpool-tracker/api/v1/squad.json");
+const squad = await res.json();
+console.log(squad.find(p =&gt; p.position === "FWD" &amp;&amp; p.status === "fit"));</code></pre>
+
+<pre><code># curl
+curl https://nnnsightnnn.github.io/liverpool-tracker/api/v1/index.json | jq .</code></pre>
+
+<pre><code># Python
+import requests
+manifest = requests.get("https://nnnsightnnn.github.io/liverpool-tracker/api/v1/index.json").json()
+for ep in manifest["endpoints"]:
+    print(ep["resource"], ep["lastUpdated"])</code></pre>
+
+<h2>Versioning</h2>
+<ul>
+  <li><strong>Additive changes</strong> — new endpoint or new field on an existing object — ship in <code>v1</code>, noted in the changelog below.</li>
+  <li><strong>Breaking changes</strong> — rename, type change, removal — ship as <code>v2</code> in parallel; <code>v1</code> keeps responding for at least 90 days from cutover.</li>
+  <li>Each tracker versions independently. Liverpool's <code>v2</code> doesn't force the others to bump.</li>
+</ul>
+
+<h2>Rate limits</h2>
+<p>None enforced — GitHub Pages CDN absorbs the traffic. Don't be ridiculous. If you're polling every second from a thousand users, mirror the JSON to your own storage. If usage ever forces a Cloudflare-in-front-of-Pages migration, that'll be announced here and won't change the URL scheme.</p>
+
+<h2>Changelog</h2>
+<table>
+  <thead><tr><th>Date</th><th>Tracker</th><th>Change</th></tr></thead>
+  <tbody>
+    <tr><td>2026-05-09</td><td>—</td><td>Portal launched. Spec published; endpoints rolling out per tracker.</td></tr>
+  </tbody>
+</table>
+
+<h2>Source</h2>
+<p>Docs hub source: <a href="https://github.com/Nnnsightnnn/api">github.com/Nnnsightnnn/api</a>. Issues / questions / "this would be cool" ideas — drop them on the relevant tracker's repo.</p>
+
+<footer>
+  Built and maintained by <a href="https://github.com/Nnnsightnnn">Kenny</a>. Part of the <a href="https://github.com/Nnnsightnnn/claudekit">claudekit</a> ecosystem of AI-automated trackers.
+</footer>
+
+</div>
+</body>
+</html>

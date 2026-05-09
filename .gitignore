@@ -1,0 +1,10 @@
+
+# --- ClaudeKit ---
+.claude/pain-points/ai-error-history.json
+.claude/skills/*/SKILL.md.bak-*
+.claude/skills/*/evals/runs/
+.claude/skills/*/evals/candidates/
+.claude/worktrees/
+.claude/settings.local.json
+# --- /ClaudeKit ---
+
