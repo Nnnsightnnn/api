@@ -104,6 +104,7 @@ footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--rul
       <tr><td><code>/liverpool-tracker/api/v1/results.json</code></td><td>Recent results</td></tr>
       <tr><td><code>/liverpool-tracker/api/v1/next-match.json</code></td><td>Next fixture</td></tr>
       <tr><td><code>/liverpool-tracker/api/v1/standings.json</code></td><td>League table snapshot</td></tr>
+      <tr><td><code>/liverpool-tracker/api/v1/standings-commentary.json</code></td><td>Narrative analysis of the table — overview plus per-team notes</td></tr>
       <tr><td><code>/liverpool-tracker/api/v1/lineup.json</code></td><td>Predicted XI, formations, alternatives</td></tr>
       <tr><td><code>/liverpool-tracker/api/v1/index.json</code></td><td>Manifest (commit SHA, last-updated, all endpoints)</td></tr>
     </tbody>
@@ -237,7 +238,7 @@ for ep in manifest["endpoints"]:
 <table>
   <thead><tr><th>Date</th><th>Tracker</th><th>Change</th></tr></thead>
   <tbody>
-    <tr><td>2026-05-25</td><td>liverpool-tracker</td><td>Endpoint drift: manifest now exposes <code>standings-commentary</code>, not in the documented endpoint set. Docs table may need a manual update.</td></tr>
+    <tr><td>2026-05-25</td><td>liverpool-tracker</td><td>Added <code>standings-commentary</code> endpoint — narrative analysis of the league table. Additive change, stays in <code>v1</code>. Documented above. Manifest commit <code>4ba8f19</code>.</td></tr>
     <tr><td>2026-05-09</td><td>liverpool, hawks, braves, falcons</td><td>All four trackers shipped <code>v1</code> endpoints. Plugin: <a href="https://github.com/Nnnsightnnn/tracker-shared/blob/main/vite-plugin-api-extract.js">tracker-shared/vite-plugin-api-extract.js</a>.</td></tr>
     <tr><td>2026-05-09</td><td>—</td><td>Portal launched.</td></tr>
   </tbody>
