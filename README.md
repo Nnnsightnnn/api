@@ -1,6 +1,6 @@
 # nnnsightnnn API portal
 
-Documentation hub for the public JSON data feeds published by the [nnnsightnnn](https://github.com/Nnnsightnnn) tracker apps.
+Documentation hub for the public JSON data feeds published by the [nnnsightnnn](https://nnnsightnnn.com) tracker apps.
 
 **Live site:** https://nnnsightnnn.github.io/api/
 
