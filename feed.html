@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nnnsightnnn — Tracker Feed</title>
+<meta name="description" content="Live feed across the nnnsightnnn trackers — Liverpool FC, Atlanta Falcons, Hawks, Braves. Next games, standings and news digests, read straight from the public v1 JSON API.">
+<meta property="og:title" content="nnnsightnnn — Tracker Feed">
+<meta property="og:description" content="One page across all four trackers. Fetched live from the public v1 JSON API.">
+<meta property="og:type" content="website">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --raised: #1c2129;
+  --border: #30363d;
+  --text: #e6edf3;
+  --dim: #8b949e;
+  --link: #58a6ff;
+  --green: #3fb950;
+  --amber: #d29922;
+  --red: #f85149;
+  --rule: #21262d;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+body { padding: 2rem 1rem 4rem; }
+.wrap { max-width: 1040px; margin: 0 auto; }
+header { padding: 1rem 0 1.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.25rem; }
+h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.01em; }
+h1 .accent { color: var(--link); }
+.tagline { color: var(--dim); font-size: 1rem; margin-top: 0.4rem; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.muted { color: var(--dim); font-size: 0.9rem; }
+
+/* toolbar */
+.bar { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.bar .status { color: var(--dim); font-size: 0.85rem; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.35rem; vertical-align: middle; background: var(--dim); }
+.dot.ok { background: var(--green); }
+.dot.bad { background: var(--red); }
+button.refresh {
+  font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 6px; padding: 0.35rem 0.85rem;
+}
+button.refresh:hover { background: var(--raised); border-color: var(--dim); }
+button.refresh[disabled] { opacity: 0.5; cursor: default; }
+
+/* card grid */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(430px, 1fr)); gap: 1rem; align-items: start; }
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-top: 3px solid var(--accent, var(--border));
+  border-radius: 8px; padding: 1.1rem 1.25rem; overflow: hidden;
+}
+.card h2 { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+.card h2 .team { color: var(--accent, var(--text)); }
+.card h2 .league { font-size: 0.72rem; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.card .stamp { color: var(--dim); font-size: 0.78rem; margin-top: 0.15rem; }
+
+/* key/value rows */
+.rows { margin: 0.9rem 0 0.2rem; }
+.row { display: flex; gap: 0.75rem; padding: 0.45rem 0; border-bottom: 1px solid var(--rule); font-size: 0.9rem; }
+.row:last-child { border-bottom: none; }
+.row .k { color: var(--dim); flex: 0 0 5.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; padding-top: 0.1rem; }
+.row .v { flex: 1; min-width: 0; }
+.row .v .sub { display: block; color: var(--dim); font-size: 0.82rem; margin-top: 0.1rem; }
+.pill { display: inline-block; padding: 0.05rem 0.45rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; border: 1px solid; }
+.pill.w { color: var(--green); border-color: rgba(63,185,80,0.4); background: rgba(63,185,80,0.12); }
+.pill.l { color: var(--red); border-color: rgba(248,81,73,0.4); background: rgba(248,81,73,0.12); }
+.pill.d { color: var(--amber); border-color: rgba(210,153,34,0.4); background: rgba(210,153,34,0.12); }
+
+/* headline block */
+.headline { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--rule); }
+.headline .lede { font-size: 0.92rem; font-weight: 600; line-height: 1.45; }
+.headline .body { font-size: 0.88rem; color: var(--dim); margin-top: 0.4rem; line-height: 1.55; white-space: pre-wrap; }
+.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* disclosure */
+details { margin-top: 0.85rem; }
+details > summary {
+  cursor: pointer; list-style: none; font-size: 0.82rem; font-weight: 600;
+  color: var(--link); padding: 0.3rem 0; user-select: none;
+}
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸ "; display: inline-block; transition: transform 0.15s; }
+details[open] > summary::before { content: "▾ "; }
+details > summary:hover { text-decoration: underline; }
+.panel { border-top: 1px solid var(--rule); margin-top: 0.5rem; padding-top: 0.75rem; }
+.panel h3 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); font-weight: 700; margin: 1rem 0 0.5rem; }
+.panel h3:first-child { margin-top: 0; }
+
+/* topics */
+.topic { padding: 0.55rem 0; border-bottom: 1px solid var(--rule); }
+.topic:last-child { border-bottom: none; }
+.topic .t { font-size: 0.87rem; font-weight: 600; line-height: 1.4; }
+.topic .d { font-size: 0.84rem; color: var(--dim); margin-top: 0.2rem; line-height: 1.5; }
+.tag { display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--dim); border: 1px solid var(--border); border-radius: 3px; padding: 0.02rem 0.3rem; margin-right: 0.4rem; vertical-align: 1px; }
+
+/* mini table */
+table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+th, td { padding: 0.35rem 0.4rem; text-align: left; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { color: var(--dim); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+td.num, th.num { text-align: right; }
+tr.me td { background: rgba(88,166,255,0.08); font-weight: 700; }
+.scroll { overflow-x: auto; }
+
+/* states */
+.note { color: var(--dim); font-size: 0.87rem; font-style: italic; }
+.err { color: var(--red); font-size: 0.87rem; }
+.skel { color: var(--dim); font-size: 0.9rem; }
+footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); color: var(--dim); font-size: 0.85rem; }
+@media (max-width: 600px) {
+  body { padding: 1rem 0.75rem 3rem; font-size: 15px; }
+  h1 { font-size: 1.4rem; }
+  .grid { grid-template-columns: 1fr; }
+  .row { flex-direction: column; gap: 0.1rem; }
+  .row .k { flex: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1><span class="accent">nnnsightnnn</span> · Tracker Feed</h1>
+  <p class="tagline">All four trackers on one page. Fetched live from the public <a href="./">v1 JSON API</a>.</p>
+</header>
+
+<div class="bar">
+  <button class="refresh" id="refresh">Refresh</button>
+  <span class="status" id="status"><span class="dot"></span>Loading…</span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  Built and maintained by <a href="https://nnnsightnnn.com">Kenny</a>. Data read live from the
+  <a href="./">tracker API</a> — this page holds no data of its own.
+  Trackers refresh in the early hours; whatever they published last is what you see here.
+</footer>
+
+</div>
+
+<script>
+"use strict";
+
+var BASE = "https://nnnsightnnn.github.io";
+
+var TRACKERS = [
+  {
+    id: "liverpool-tracker", team: "Liverpool FC", league: "Premier League",
+    accent: "#e8384f", me: /liverpool/i,
+    next: "next-match", results: "results", standings: "standings", digest: "news-digest"
+  },
+  {
+    id: "braves-tracker", team: "Atlanta Braves", league: "MLB",
+    accent: "#eaaa00", me: /^ATL$|braves/i,
+    next: "next-game", results: "results", standings: "standings", digest: "news-digest"
+  },
+  {
+    id: "hawks-tracker", team: "Atlanta Hawks", league: "NBA",
+    accent: "#c1d32f", me: /hawks/i,
+    next: "next-game", results: "results", standings: "standings", digest: "news-digest"
+  },
+  {
+    id: "falcons-tracker", team: "Atlanta Falcons", league: "NFL",
+    accent: "#a5acaf", me: /falcons/i,
+    next: "next-game", results: null, standings: null, digest: "news-digest"
+  }
+];
+
+/* ---------- helpers ---------- */
+
+function esc(s) {
+  if (s === null || s === undefined) return "";
+  return String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function trim(s, n) {
+  s = String(s || "").trim();
+  if (s.length <= n) return s;
+  var cut = s.slice(0, n);
+  var sp = cut.lastIndexOf(" ");
+  if (sp > n * 0.6) cut = cut.slice(0, sp);
+  return cut.replace(/[.,;:—-]+$/, "") + "…";
+}
+
+function getJSON(tracker, resource, bust) {
+  var url = BASE + "/" + tracker + "/api/v1/" + resource + ".json";
+  if (bust) url += "?t=" + bust;
+  return fetch(url, { cache: bust ? "reload" : "default" }).then(function (r) {
+    if (!r.ok) throw new Error(resource + " HTTP " + r.status);
+    return r.json();
+  });
+}
+
+/* Dates arrive in several shapes: full ISO with Z, ISO without a zone,
+   and plain YYYY-MM-DD. Parse leniently and never throw. */
+function fmtDate(raw, timeStr) {
+  if (!raw) return "";
+  var s = String(raw);
+  var plainDay = /^\d{4}-\d{2}-\d{2}$/.test(s);
+  var d = new Date(plainDay ? s + "T12:00:00" : s);
+  if (isNaN(d.getTime())) return esc(s);
+  var opts = { weekday: "short", month: "short", day: "numeric" };
+  var out = d.toLocaleDateString(undefined, opts);
+  if (timeStr) return out + " · " + timeStr;
+  if (!plainDay && /\d{2}:\d{2}/.test(s)) {
+    out += " · " + d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  }
+  return out;
+}
+
+function relTime(raw) {
+  var d = new Date(raw);
+  if (isNaN(d.getTime())) return "";
+  var mins = Math.round((Date.now() - d.getTime()) / 60000);
+  if (mins < 2) return "just now";
+  if (mins < 60) return mins + "m ago";
+  var hrs = Math.round(mins / 60);
+  if (hrs < 24) return hrs + "h ago";
+  return Math.round(hrs / 24) + "d ago";
+}
+
+/* ---------- normalisers ----------
+   Each tracker was built for its own sport, so no two payloads agree on
+   field names. Everything below flattens them into one shape. Any endpoint
+   is allowed to be null (falcons/next-game and hawks/playoff-series both
+   are, out of season) and must degrade quietly. */
+
+function normNext(cfg, d) {
+  if (!d || typeof d !== "object") return null;
+  var opp = d.opponent || d.opp || "";
+  var when = fmtDate(d.date, d.time);
+  var note = d.note || d.seriesContext || "";
+  var bits = [];
+  if (d.venue) bits.push(d.venue);
+  if (d.broadcast || d.tv) bits.push(d.broadcast || d.tv);
+  if (d.competition) bits.unshift(d.competition);
+  var probables = "";
+  if (d.probables && d.probables.atl && d.probables.opp) {
+    probables = d.probables.atl.pitcher + " (" + d.probables.atl.record + ", " +
+      d.probables.atl.era + ") vs " + d.probables.opp.pitcher +
+      " (" + d.probables.opp.record + ", " + d.probables.opp.era + ")";
+  }
+  return {
+    opponent: opp,
+    home: !!d.home,
+    when: when,
+    meta: bits.join(" · "),
+    probables: probables,
+    note: note
+  };
+}
+
+function normStandings(cfg, arr) {
+  if (!Array.isArray(arr) || !arr.length) return null;
+  var meIdx = -1;
+  for (var i = 0; i < arr.length; i++) {
+    var label = String(arr[i].team || arr[i].name || "");
+    if (cfg.me.test(label) || cfg.me.test(String(arr[i].name || ""))) { meIdx = i; break; }
+  }
+  var me = meIdx >= 0 ? arr[meIdx] : null;
+  var line = "";
+  if (me) {
+    if (me.pts !== undefined) {
+      line = ordinal(me.pos) + " · " + me.pts + " pts · " + me.w + "W " + me.d + "D " + me.l + "L";
+    } else if (me.seed !== undefined) {
+      line = ordinal(me.seed) + " seed · " + me.record;
+    } else if (me.w !== undefined) {
+      line = me.w + "-" + me.l + " · " + (Number(me.gb) === 0 ? "1st in division" : me.gb + " GB") +
+        (me.streak ? " · " + me.streak : "");
+    }
+  }
+  return { line: line, rows: arr, meIdx: meIdx };
+}
+
+function ordinal(n) {
+  n = Number(n);
+  if (!isFinite(n)) return String(n);
+  var s = ["th", "st", "nd", "rd"], v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+function normResults(cfg, arr) {
+  if (!Array.isArray(arr)) return [];
+  return arr.slice(0, 6).map(function (r) {
+    var score = r.score;
+    if (score === undefined && r.atlScore !== undefined) {
+      score = r.atlScore + "-" + r.oppScore;
+    }
+    return {
+      date: r.date,
+      opponent: r.opponent || r.opp || "",
+      home: !!r.home,
+      score: score || "",
+      result: String(r.result || "").toUpperCase()
+    };
+  });
+}
+
+function normDigest(cfg, d) {
+  if (!d || typeof d !== "object") return null;
+  var topicsRaw = d.keyTopics || d.topics || [];
+  var topics = (Array.isArray(topicsRaw) ? topicsRaw : []).map(function (t) {
+    return {
+      title: t.title || "",
+      detail: t.detail || "",
+      category: t.category || t.recency || "",
+      url: t.sourceUrl || ""
+    };
+  });
+
+  var lede = "", body = "";
+  if (d.cover) {
+    /* falcons ships an editorial cover block instead of a flat summary */
+    var c = d.cover;
+    lede = [c.headLine1, c.headEm, c.headLine3].filter(Boolean).join(" ");
+    body = c.deck || c.kicker || "";
+  } else {
+    body = d.summary || "";
+    lede = topics.length ? topics[0].title : "";
+  }
+
+  return {
+    generatedAt: d.generatedAt || "",
+    lede: lede,
+    body: body,
+    topics: topics,
+    sources: Array.isArray(d.sources) ? d.sources.length : 0
+  };
+}
+
+/* ---------- rendering ---------- */
+
+var COLUMN_SETS = [
+  { needs: "pts", cols: [
+      { k: "pos", h: "#", num: true }, { k: "team", h: "Team" },
+      { k: "p", h: "P", num: true }, { k: "w", h: "W", num: true },
+      { k: "d", h: "D", num: true }, { k: "l", h: "L", num: true },
+      { k: "gd", h: "GD", num: true }, { k: "pts", h: "Pts", num: true } ] },
+  { needs: "seed", cols: [
+      { k: "seed", h: "Seed", num: true }, { k: "team", h: "Team" },
+      { k: "record", h: "Record" } ] },
+  { needs: "pct", cols: [
+      { k: "name", h: "Team" }, { k: "w", h: "W", num: true },
+      { k: "l", h: "L", num: true }, { k: "pct", h: "Pct", num: true },
+      { k: "gb", h: "GB", num: true }, { k: "streak", h: "Strk" } ] }
+];
+
+function renderTable(st) {
+  if (!st || !st.rows.length) return "";
+  var sample = st.rows[0], set = null;
+  for (var i = 0; i < COLUMN_SETS.length; i++) {
+    if (sample[COLUMN_SETS[i].needs] !== undefined) { set = COLUMN_SETS[i]; break; }
+  }
+  if (!set) return "";
+  var head = set.cols.map(function (c) {
+    return "<th" + (c.num ? ' class="num"' : "") + ">" + esc(c.h) + "</th>";
+  }).join("");
+  var body = st.rows.map(function (r, idx) {
+    var tds = set.cols.map(function (c) {
+      var v = r[c.k];
+      return "<td" + (c.num ? ' class="num"' : "") + ">" + esc(v === undefined ? "" : v) + "</td>";
+    }).join("");
+    return "<tr" + (idx === st.meIdx ? ' class="me"' : "") + ">" + tds + "</tr>";
+  }).join("");
+  return '<div class="scroll"><table><thead><tr>' + head +
+    "</tr></thead><tbody>" + body + "</tbody></table></div>";
+}
+
+function renderResults(list) {
+  if (!list.length) return "";
+  return '<div class="scroll"><table><tbody>' + list.map(function (r) {
+    var cls = r.result === "W" ? "w" : (r.result === "L" ? "l" : "d");
+    return "<tr><td>" + esc(fmtDate(r.date)) + "</td>" +
+      "<td>" + (r.home ? "vs" : "@") + " " + esc(r.opponent) + "</td>" +
+      '<td class="num">' + esc(r.score) + "</td>" +
+      '<td class="num">' + (r.result ? '<span class="pill ' + cls + '">' + esc(r.result) + "</span>" : "") +
+      "</td></tr>";
+  }).join("") + "</tbody></table></div>";
+}
+
+function renderCard(cfg, bundle) {
+  var h = [];
+  h.push('<section class="card" style="--accent:' + cfg.accent + '">');
+  h.push('<h2><span class="team">' + esc(cfg.team) + '</span>' +
+    '<span class="league">' + esc(cfg.league) + "</span></h2>");
+
+  if (bundle.error) {
+    h.push('<p class="err">Could not load: ' + esc(bundle.error) + "</p>");
+    h.push("</section>");
+    return h.join("");
+  }
+
+  var stampBits = [];
+  if (bundle.manifest && bundle.manifest.generatedAt) {
+    stampBits.push("updated " + relTime(bundle.manifest.generatedAt));
+  }
+  if (bundle.manifest && bundle.manifest.commit) {
+    stampBits.push(esc(bundle.manifest.commit));
+  }
+  if (stampBits.length) h.push('<p class="stamp">' + stampBits.join(" · ") + "</p>");
+
+  /* --- quick rows --- */
+  h.push('<div class="rows">');
+
+  var nx = bundle.next;
+  if (nx && (nx.opponent || nx.when)) {
+    var line = (nx.home ? "vs " : "at ") + esc(nx.opponent || "TBD");
+    var sub = [nx.when, nx.meta].filter(Boolean).join(" · ");
+    h.push('<div class="row"><span class="k">Next</span><span class="v">' + line +
+      (sub ? '<span class="sub">' + esc(sub) + "</span>" : "") +
+      (nx.probables ? '<span class="sub">' + esc(nx.probables) + "</span>" : "") +
+      "</span></div>");
+  } else {
+    h.push('<div class="row"><span class="k">Next</span><span class="v note">' +
+      "Nothing scheduled" + "</span></div>");
+  }
+
+  if (bundle.standings && bundle.standings.line) {
+    h.push('<div class="row"><span class="k">Standing</span><span class="v">' +
+      esc(bundle.standings.line) + "</span></div>");
+  }
+
+  if (bundle.results && bundle.results.length) {
+    var form = bundle.results.slice(0, 5).map(function (r) {
+      var cls = r.result === "W" ? "w" : (r.result === "L" ? "l" : "d");
+      return '<span class="pill ' + cls + '">' + esc(r.result || "·") + "</span>";
+    }).join(" ");
+    h.push('<div class="row"><span class="k">Form</span><span class="v">' + form + "</span></div>");
+  }
+  h.push("</div>");
+  return h.join("") + renderDigest(cfg, bundle) + "</section>";
+}
+
+function renderDigest(cfg, b) {
+  var dg = b.digest;
+  if (!dg) return "";
+  var h = [];
+
+  h.push('<div class="headline">');
+  if (dg.lede) h.push('<p class="lede">' + esc(trim(dg.lede, 160)) + "</p>");
+  if (dg.body) h.push('<p class="body clamp">' + esc(dg.body) + "</p>");
+  h.push("</div>");
+
+  /* The Hawks digest runs to ~50k characters, so the full body only ever
+     renders inside the collapsed panel, and even there it is capped. */
+  var hasMore = (dg.body && dg.body.length > 240) || dg.topics.length ||
+    (b.results && b.results.length) || (b.standings && b.standings.rows.length);
+  if (!hasMore) return h.join("");
+
+  h.push("<details><summary>Full digest, results and table</summary>");
+  h.push('<div class="panel">');
+
+  if (dg.body && dg.body.length > 240) {
+    h.push("<h3>Digest" + (dg.generatedAt ? " · " + esc(relTime(dg.generatedAt)) : "") + "</h3>");
+    h.push('<p class="body">' + esc(trim(dg.body, 4000)) + "</p>");
+  }
+
+  if (dg.topics.length) {
+    h.push("<h3>Topics · " + dg.topics.length +
+      (dg.sources ? " · " + dg.sources + " sources" : "") + "</h3>");
+    h.push(dg.topics.slice(0, 12).map(function (t) {
+      var title = t.url
+        ? '<a href="' + esc(t.url) + '" target="_blank" rel="noopener noreferrer">' + esc(trim(t.title, 180)) + "</a>"
+        : esc(trim(t.title, 180));
+      return '<div class="topic"><div class="t">' +
+        (t.category ? '<span class="tag">' + esc(t.category) + "</span>" : "") + title +
+        "</div>" + (t.detail ? '<div class="d">' + esc(trim(t.detail, 320)) + "</div>" : "") + "</div>";
+    }).join(""));
+    if (dg.topics.length > 12) {
+      h.push('<p class="note">' + (dg.topics.length - 12) + " more in the source feed.</p>");
+    }
+  }
+
+  if (b.results && b.results.length) {
+    h.push("<h3>Recent results</h3>" + renderResults(b.results));
+  }
+  if (b.standings && b.standings.rows.length) {
+    h.push("<h3>Table</h3>" + renderTable(b.standings));
+  }
+
+  h.push("</div></details>");
+  return h.join("");
+}
+
+/* ---------- loading ---------- */
+
+function loadTracker(cfg, bust) {
+  var want = [
+    ["manifest", "index"],
+    ["digest", cfg.digest],
+    ["next", cfg.next],
+    ["results", cfg.results],
+    ["standings", cfg.standings]
+  ].filter(function (p) { return !!p[1]; });
+
+  return Promise.all(want.map(function (p) {
+    return getJSON(cfg.id, p[1], bust).then(
+      function (v) { return [p[0], v, null]; },
+      function (e) { return [p[0], null, e]; }
+    );
+  })).then(function (settled) {
+    var raw = {}, failures = [];
+    settled.forEach(function (s) {
+      raw[s[0]] = s[1];
+      if (s[2]) failures.push(s[2].message);
+    });
+
+    /* Only a dead manifest counts as the tracker being down. A single
+       missing resource just means that section renders empty. */
+    if (!raw.manifest) {
+      return { cfg: cfg, error: failures[0] || "manifest unavailable", ok: false };
+    }
+    return {
+      cfg: cfg,
+      ok: true,
+      manifest: raw.manifest,
+      digest: normDigest(cfg, raw.digest),
+      next: normNext(cfg, raw.next),
+      results: normResults(cfg, raw.results),
+      standings: normStandings(cfg, raw.standings),
+      partial: failures.length
+    };
+  });
+}
+
+function setStatus(cls, text) {
+  document.getElementById("status").innerHTML =
+    '<span class="dot ' + cls + '"></span>' + esc(text);
+}
+
+function load(bust) {
+  var grid = document.getElementById("grid");
+  var btn = document.getElementById("refresh");
+  btn.disabled = true;
+  setStatus("", "Loading four trackers…");
+
+  /* Placeholders keep the cards in a stable order while they land. */
+  grid.innerHTML = TRACKERS.map(function (c) {
+    return '<section class="card" id="slot-' + c.id + '" style="--accent:' + c.accent + '">' +
+      '<h2><span class="team">' + esc(c.team) + '</span>' +
+      '<span class="league">' + esc(c.league) + "</span></h2>" +
+      '<p class="skel">Fetching…</p></section>';
+  }).join("");
+
+  var done = 0, bad = 0;
+  var jobs = TRACKERS.map(function (cfg) {
+    return loadTracker(cfg, bust).then(function (bundle) {
+      done++;
+      if (!bundle.ok) bad++;
+      var slot = document.getElementById("slot-" + cfg.id);
+      if (slot) slot.outerHTML = renderCard(cfg, bundle);
+      setStatus(bad ? "bad" : "ok", done + " of " + TRACKERS.length + " loaded");
+      return bundle;
+    });
+  });
+
+  return Promise.all(jobs).then(function (all) {
+    btn.disabled = false;
+    var live = all.filter(function (b) { return b.ok; }).length;
+    var when = new Date().toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+    if (live === TRACKERS.length) {
+      setStatus("ok", "All four trackers live · read at " + when);
+    } else {
+      setStatus("bad", live + " of " + TRACKERS.length + " trackers responding · read at " + when);
+    }
+  });
+}
+
+document.getElementById("refresh").addEventListener("click", function () {
+  load(Date.now());
+});
+
+load(0);
+</script>
+</body>
+</html>
