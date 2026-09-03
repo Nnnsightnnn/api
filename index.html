@@ -244,6 +244,8 @@ for ep in manifest["endpoints"]:
 <table>
   <thead><tr><th>Date</th><th>Tracker</th><th>Change</th></tr></thead>
   <tbody>
+    <tr><td>2026-09-03</td><td>liverpool-tracker</td><td>ENDPOINT DRIFT (ongoing since 2026-09-02): manifest still advertises <code>analysis</code> and <code>opposition</code> beyond the seven documented resources. Additive only, badge stays Live. Endpoint table still needs a manual update. Manifest commit <code>b898441</code>.</td></tr>
+    <tr><td>2026-09-03</td><td>falcons-tracker</td><td>HOLLOW (ongoing since 2026-09-01): <code>next-game</code> still returns HTTP 200 with a <code>null</code> payload. Badge stays Live. Manifest commit <code>8ecf7c5</code>.</td></tr>
     <tr><td>2026-09-02</td><td>liverpool-tracker</td><td>ENDPOINT DRIFT: manifest now advertises <code>analysis</code> and <code>opposition</code> in addition to the seven documented resources. Additive only — nothing removed, badge stays Live. The endpoint table above needs a manual update. Manifest commit <code>24d2c43</code>.</td></tr>
     <tr><td>2026-09-02</td><td>falcons-tracker</td><td>HOLLOW (ongoing since 2026-09-01): <code>next-game</code> still returns HTTP 200 with a <code>null</code> payload. Badge stays Live. Manifest commit <code>8eac279</code>.</td></tr>
     <tr><td>2026-09-01</td><td>falcons-tracker</td><td>HOLLOW: <code>next-game</code> returns HTTP 200 with a <code>null</code> payload. Endpoint is up and the resource list is unchanged, so the badge stays Live — but the data is empty. Manifest commit <code>dd52756</code>.</td></tr>
@@ -258,7 +260,7 @@ for ep in manifest["endpoints"]:
 
 <footer>
   Built and maintained by <a href="https://nnnsightnnn.com">Kenny</a>. Part of the <a href="https://github.com/Nnnsightnnn/claudekit">claudekit</a> ecosystem of AI-automated trackers.
-  <!-- last-verified --><br><small style="color: var(--dim);">Endpoints last verified: <time datetime="2026-09-02T09:08:29Z">September 2, 2026</time> · all four trackers serving 200 · see changelog for drift and hollow notes</small>
+  <!-- last-verified --><br><small style="color: var(--dim);">Endpoints last verified: <time datetime="2026-09-03T09:10:00Z">September 3, 2026</time> · all four trackers serving 200 · see changelog for drift and hollow notes</small>
 </footer>
 
 </div>
