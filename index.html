@@ -244,6 +244,8 @@ for ep in manifest["endpoints"]:
 <table>
   <thead><tr><th>Date</th><th>Tracker</th><th>Change</th></tr></thead>
   <tbody>
+    <tr><td>2026-09-05</td><td>liverpool-tracker</td><td>ENDPOINT DRIFT (ongoing since 2026-09-02): manifest still advertises <code>analysis</code> and <code>opposition</code> beyond the seven documented resources. Additive only, badge stays Live. Endpoint table still needs a manual update. Manifest commit <code>d9a1acb</code>.</td></tr>
+    <tr><td>2026-09-05</td><td>falcons-tracker</td><td>HOLLOW (ongoing since 2026-09-01): <code>next-game</code> carries a real payload but still fails the field contract — opponent is keyed <code>opp</code>, docs expect <code>opponent</code>. Badge stays Live. Manifest commit <code>3a9c513</code>.</td></tr>
     <tr><td>2026-09-04</td><td>liverpool-tracker</td><td>ENDPOINT DRIFT (ongoing since 2026-09-02): manifest still advertises <code>analysis</code> and <code>opposition</code> beyond the seven documented resources. Additive only, badge stays Live. Endpoint table still needs a manual update. Manifest commit <code>d40ee5d</code>.</td></tr>
     <tr><td>2026-09-04</td><td>falcons-tracker</td><td>HOLLOW (ongoing since 2026-09-01, nature changed): <code>next-game</code> is no longer <code>null</code> — it now carries a real Week 1 payload (PIT, 2026-09-13) — but fails the field contract because it names the opponent <code>opp</code> rather than the documented <code>opponent</code>. Data is live; the schema or the docs need reconciling. Badge stays Live. Manifest commit <code>faf4c79</code>.</td></tr>
     <tr><td>2026-09-03</td><td>liverpool-tracker</td><td>ENDPOINT DRIFT (ongoing since 2026-09-02): manifest still advertises <code>analysis</code> and <code>opposition</code> beyond the seven documented resources. Additive only, badge stays Live. Endpoint table still needs a manual update. Manifest commit <code>b898441</code>.</td></tr>
@@ -262,7 +264,7 @@ for ep in manifest["endpoints"]:
 
 <footer>
   Built and maintained by <a href="https://nnnsightnnn.com">Kenny</a>. Part of the <a href="https://github.com/Nnnsightnnn/claudekit">claudekit</a> ecosystem of AI-automated trackers.
-  <!-- last-verified --><br><small style="color: var(--dim);">Endpoints last verified: <time datetime="2026-09-04T09:10:00Z">September 4, 2026</time> · all four trackers serving 200 · see changelog for drift and hollow notes</small>
+  <!-- last-verified --><br><small style="color: var(--dim);">Endpoints last verified: <time datetime="2026-09-05T09:10:00Z">September 5, 2026</time> · all four trackers serving 200 · see changelog for drift and hollow notes</small>
 </footer>
 
 </div>
