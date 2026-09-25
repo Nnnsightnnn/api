@@ -244,6 +244,9 @@ for ep in manifest["endpoints"]:
 <table>
   <thead><tr><th>Date</th><th>Tracker</th><th>Change</th></tr></thead>
   <tbody>
+    <tr><td>2026-09-25</td><td>liverpool-tracker</td><td>ENDPOINT DRIFT (ongoing since 2026-09-02): manifest still advertises <code>analysis</code> and <code>opposition</code> beyond the seven documented resources. Additive only, badge stays Live. Endpoint table still needs a manual update. Manifest commit <code>eb986ec</code>.</td></tr>
+    <tr><td>2026-09-25</td><td>hawks-tracker</td><td>STALE RECOVERED: manifest now generated 2026-09-25T08:21Z (0.8h old) — the daily update task is running again. All six resources pass their field contracts. Badge stays Live. Manifest commit <code>df590d6</code>.</td></tr>
+    <tr><td>2026-09-25</td><td>falcons-tracker</td><td>HOLLOW (ongoing since 2026-09-01): <code>next-game</code> carries a real payload (Week 4 at New Orleans Saints, 2026-10-05, MNF 8:15 PM ET on ESPN) but still fails the field contract — opponent is keyed <code>opp</code>, docs expect <code>opponent</code>. Badge stays Live. Manifest commit <code>ea6cacf</code>.</td></tr>
     <tr><td>2026-09-24</td><td>hawks-tracker</td><td>STALE: manifest 48.8h old (generatedAt 2026-09-22T08:18Z), update task may not be running. All six resources still pass their field contracts. Badge stays Live. Manifest commit <code>2a0ddd0</code>.</td></tr>
     <tr><td>2026-09-24</td><td>liverpool-tracker</td><td>ENDPOINT DRIFT (ongoing since 2026-09-02): manifest still advertises <code>analysis</code> and <code>opposition</code> beyond the seven documented resources. Additive only, badge stays Live. Endpoint table still needs a manual update. Manifest commit <code>f553230</code>.</td></tr>
     <tr><td>2026-09-24</td><td>falcons-tracker</td><td>HOLLOW (ongoing since 2026-09-01): <code>next-game</code> carries a real payload (Week 3 at GB, 2026-09-24, TNF 8:15 PM ET on Prime) but still fails the field contract — opponent is keyed <code>opp</code>, docs expect <code>opponent</code>. Badge stays Live. Manifest commit <code>150991f</code>.</td></tr>
@@ -303,7 +306,7 @@ for ep in manifest["endpoints"]:
 
 <footer>
   Built and maintained by <a href="https://nnnsightnnn.com">Kenny</a>. Part of the <a href="https://github.com/Nnnsightnnn/claudekit">claudekit</a> ecosystem of AI-automated trackers.
-  <!-- last-verified --><br><small style="color: var(--dim);">Endpoints last verified: <time datetime="2026-09-24T09:08:00Z">September 24, 2026</time> · all four trackers serving 200 · see changelog for drift, hollow and stale notes</small>
+  <!-- last-verified --><br><small style="color: var(--dim);">Endpoints last verified: <time datetime="2026-09-25T09:10:00Z">September 25, 2026</time> · all four trackers serving 200 · see changelog for drift, hollow and stale notes</small>
 </footer>
 
 </div>
