@@ -1,0 +1,136 @@
+{
+  "checkedAt": "2026-09-29T09:14:28.836Z",
+  "results": [
+    {
+      "tracker": "liverpool-tracker",
+      "url": "https://nnnsightnnn.github.io/liverpool-tracker/api/v1/index.json",
+      "status": 200,
+      "ok": true,
+      "parsed": true,
+      "commit": "44d8892",
+      "generatedAt": "2026-09-29T08:51:50.451Z",
+      "ageHours": 0.4,
+      "stale": false,
+      "endpoints": [
+        "analysis",
+        "lineup",
+        "news-digest",
+        "next-match",
+        "opposition",
+        "results",
+        "squad",
+        "standings",
+        "standings-commentary"
+      ],
+      "documented": [
+        "lineup",
+        "news-digest",
+        "next-match",
+        "results",
+        "squad",
+        "standings",
+        "standings-commentary"
+      ],
+      "driftAdded": [
+        "analysis",
+        "opposition"
+      ],
+      "driftRemoved": [],
+      "fieldFailures": [],
+      "hollow": false
+    },
+    {
+      "tracker": "hawks-tracker",
+      "url": "https://nnnsightnnn.github.io/hawks-tracker/api/v1/index.json",
+      "status": 200,
+      "ok": true,
+      "parsed": true,
+      "commit": "bb0d748",
+      "generatedAt": "2026-09-29T08:21:35.228Z",
+      "ageHours": 0.9,
+      "stale": false,
+      "endpoints": [
+        "news-digest",
+        "next-game",
+        "playoff-series",
+        "results",
+        "roster",
+        "standings"
+      ],
+      "documented": [
+        "news-digest",
+        "next-game",
+        "playoff-series",
+        "results",
+        "roster",
+        "standings"
+      ],
+      "driftAdded": [],
+      "driftRemoved": [],
+      "fieldFailures": [],
+      "hollow": false
+    },
+    {
+      "tracker": "braves-tracker",
+      "url": "https://nnnsightnnn.github.io/braves-tracker/api/v1/index.json",
+      "status": 200,
+      "ok": true,
+      "parsed": true,
+      "commit": "27e2908",
+      "generatedAt": "2026-09-29T08:51:00.392Z",
+      "ageHours": 0.4,
+      "stale": false,
+      "endpoints": [
+        "news-digest",
+        "next-game",
+        "results",
+        "roster",
+        "standings",
+        "upcoming-schedule"
+      ],
+      "documented": [
+        "news-digest",
+        "next-game",
+        "results",
+        "roster",
+        "standings",
+        "upcoming-schedule"
+      ],
+      "driftAdded": [],
+      "driftRemoved": [],
+      "fieldFailures": [],
+      "hollow": false
+    },
+    {
+      "tracker": "falcons-tracker",
+      "url": "https://nnnsightnnn.github.io/falcons-tracker/api/v1/index.json",
+      "status": 200,
+      "ok": true,
+      "parsed": true,
+      "commit": "ee1ab2b",
+      "generatedAt": "2026-09-29T08:32:17.808Z",
+      "ageHours": 0.7,
+      "stale": false,
+      "endpoints": [
+        "calendar",
+        "draft",
+        "news-digest",
+        "next-game",
+        "roster"
+      ],
+      "documented": [
+        "calendar",
+        "draft",
+        "news-digest",
+        "next-game",
+        "roster"
+      ],
+      "driftAdded": [],
+      "driftRemoved": [],
+      "fieldFailures": [
+        "next-game: missing opponent/date"
+      ],
+      "hollow": true
+    }
+  ]
+}
