@@ -48,12 +48,21 @@ cd ~/api
 
 cat > ~/api/.health/check.js <<'JSEOF'
 const TRACKERS = ['liverpool-tracker', 'hawks-tracker', 'braves-tracker', 'falcons-tracker'];
-const DOCUMENTED_ENDPOINTS = {
-  'liverpool-tracker': ['squad', 'news-digest', 'results', 'next-match', 'standings', 'standings-commentary', 'lineup'],
-  'hawks-tracker':     ['roster', 'news-digest', 'results', 'next-game', 'playoff-series', 'standings'],
-  'braves-tracker':    ['roster', 'news-digest', 'results', 'next-game', 'upcoming-schedule', 'standings'],
-  'falcons-tracker':   ['roster', 'news-digest', 'next-game', 'draft', 'calendar'],
-};
+// The documented set is read from the endpoint tables in index.html itself, so
+// the check always compares the live manifests against what the published docs
+// actually say. Never hardcode this list again: a copy here went stale on
+// 2026-09-02 and kept reporting drift for a month after the docs question was
+// the only thing left to decide.
+const fs = require('fs');
+const path = require('path');
+const DOCS_HTML = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+function documentedFor(tracker) {
+  const re = new RegExp(`<td><code>/${tracker}/api/v1/([a-z0-9-]+)\\.json</code></td>`, 'g');
+  const found = [...DOCS_HTML.matchAll(re)].map(m => m[1]).filter(r => r !== 'index');
+  if (found.length === 0) throw new Error(`no documented endpoints parsed from index.html for ${tracker}`);
+  return [...new Set(found)];
+}
+const DOCUMENTED_ENDPOINTS = Object.fromEntries(TRACKERS.map(t => [t, documentedFor(t)]));
 
 // Resources that are legitimately null when nothing is happening.
 // Do NOT add falcons/next-game here — that one being null IS the bug.
@@ -202,7 +211,7 @@ Walk through each tracker's result:
 - **All four `ok: true`, zero drift, zero field failures, none stale** → only update the "Last verified" footer (Step 4a) and commit. No iMessage.
 - **Any tracker `ok: false`** → flip that tracker's badge in `index.html` from `badge-live`>Live to `badge-deprecated`>Down. Append a changelog row: `<today> | <tracker> | DOWN: status=<N>, error=<short>`. Compose an iMessage (Step 5).
 - **Recovery** (was previously down per `~/api/.health/last.json` from prior run, now `ok: true`) → flip badge from `badge-deprecated`>Down back to `badge-live`>Live. Append a changelog row noting recovery. No iMessage.
-- **Endpoint drift** (driftAdded or driftRemoved non-empty) → append a changelog row noting drift; iMessage Kenny that the docs need a manual update. Do NOT auto-edit the endpoint table — the resource list lives in code-form on the page and Kenny should decide naming.
+- **Endpoint drift** (driftAdded or driftRemoved non-empty) → append a changelog row noting drift; iMessage Kenny that the docs need a manual update. Do NOT auto-edit the endpoint table — Kenny should decide naming. The documented set is parsed from that table in `index.html` at run time, so once the table is updated the drift clears on the next run with no change to this file.
 - **Hollow** (`hollow: true`, i.e. `fieldFailures` non-empty) → append a changelog row: `<today> | <tracker> | HOLLOW: <first 2 failures>`. Leave the badge on Live. iMessage **only if** the same tracker was not already hollow in the previous run.
 - **Stale** (`stale: true`) → append a changelog row: `<today> | <tracker> | STALE: manifest <N>h old, update task may not be running`. Leave the badge on Live. iMessage **only if** it was not already stale in the previous run.
 - **Hollow/stale recovery** (was hollow or stale, now clean) → append a changelog row noting it recovered. No iMessage.
