@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-02T09:05:11.263Z",
+  "checkedAt": "2026-10-03T09:05:28.234Z",
   "results": [
     {
       "tracker": "liverpool-tracker",
@@ -7,9 +7,9 @@
       "status": 200,
       "ok": true,
       "parsed": true,
-      "commit": "74b7dab",
-      "generatedAt": "2026-10-02T08:23:24.868Z",
-      "ageHours": 0.7,
+      "commit": "bd97f51",
+      "generatedAt": "2026-10-03T08:20:05.000Z",
+      "ageHours": 0.8,
       "stale": false,
       "endpoints": [
         "analysis",
@@ -23,18 +23,17 @@
         "standings-commentary"
       ],
       "documented": [
+        "analysis",
         "lineup",
         "news-digest",
         "next-match",
+        "opposition",
         "results",
         "squad",
         "standings",
         "standings-commentary"
       ],
-      "driftAdded": [
-        "analysis",
-        "opposition"
-      ],
+      "driftAdded": [],
       "driftRemoved": [],
       "fieldFailures": [],
       "hollow": false
@@ -47,7 +46,7 @@
       "parsed": true,
       "commit": "af2e1d8",
       "generatedAt": "2026-10-02T08:19:54.915Z",
-      "ageHours": 0.8,
+      "ageHours": 24.8,
       "stale": false,
       "endpoints": [
         "news-digest",
@@ -78,7 +77,7 @@
       "parsed": true,
       "commit": "545afd3",
       "generatedAt": "2026-10-02T08:49:36.789Z",
-      "ageHours": 0.3,
+      "ageHours": 24.3,
       "stale": false,
       "endpoints": [
         "news-digest",
@@ -107,8 +106,8 @@
       "status": 200,
       "ok": true,
       "parsed": true,
-      "commit": "65b592e",
-      "generatedAt": "2026-10-02T08:25:06.807Z",
+      "commit": "9c4620e",
+      "generatedAt": "2026-10-03T08:24:44.743Z",
       "ageHours": 0.7,
       "stale": false,
       "endpoints": [
