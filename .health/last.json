@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-15T09:05:28.132Z",
+  "checkedAt": "2026-10-16T09:05:34.346Z",
   "results": [
     {
       "tracker": "liverpool-tracker",
@@ -7,8 +7,8 @@
       "status": 200,
       "ok": true,
       "parsed": true,
-      "commit": "837ae19",
-      "generatedAt": "2026-10-15T08:17:41.564Z",
+      "commit": "69890cd",
+      "generatedAt": "2026-10-16T08:20:12.640Z",
       "ageHours": 0.8,
       "stale": false,
       "endpoints": [
@@ -44,8 +44,8 @@
       "status": 200,
       "ok": true,
       "parsed": true,
-      "commit": "c3423ac",
-      "generatedAt": "2026-10-15T08:15:15.472Z",
+      "commit": "da56291",
+      "generatedAt": "2026-10-16T08:15:00.322Z",
       "ageHours": 0.8,
       "stale": false,
       "endpoints": [
@@ -75,8 +75,8 @@
       "status": 200,
       "ok": true,
       "parsed": true,
-      "commit": "c90ac5e",
-      "generatedAt": "2026-10-15T08:43:33.251Z",
+      "commit": "877d050",
+      "generatedAt": "2026-10-16T08:44:10.123Z",
       "ageHours": 0.4,
       "stale": false,
       "endpoints": [
@@ -106,8 +106,8 @@
       "status": 200,
       "ok": true,
       "parsed": true,
-      "commit": "23cace5",
-      "generatedAt": "2026-10-15T08:24:39.300Z",
+      "commit": "0df1d78",
+      "generatedAt": "2026-10-16T08:23:52.165Z",
       "ageHours": 0.7,
       "stale": false,
       "endpoints": [
