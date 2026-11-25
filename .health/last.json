@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-24T10:08:09.787Z",
+  "checkedAt": "2026-11-25T10:07:44.742Z",
   "results": [
     {
       "tracker": "liverpool-tracker",
@@ -7,9 +7,9 @@
       "status": 200,
       "ok": true,
       "parsed": true,
-      "commit": "b47e0bb",
-      "generatedAt": "2026-11-24T09:24:31.619Z",
-      "ageHours": 0.7,
+      "commit": "ddb20ab",
+      "generatedAt": "2026-11-25T09:21:53.859Z",
+      "ageHours": 0.8,
       "stale": false,
       "endpoints": [
         "analysis",
@@ -46,7 +46,7 @@
       "parsed": true,
       "commit": "656fd2f",
       "generatedAt": "2026-11-24T09:16:04.208Z",
-      "ageHours": 0.9,
+      "ageHours": 24.9,
       "stale": false,
       "endpoints": [
         "news-digest",
@@ -77,7 +77,7 @@
       "parsed": true,
       "commit": "0e5bcdc",
       "generatedAt": "2026-11-24T09:51:04.657Z",
-      "ageHours": 0.3,
+      "ageHours": 24.3,
       "stale": false,
       "endpoints": [
         "news-digest",
@@ -108,8 +108,8 @@
       "parsed": true,
       "commit": "090d631",
       "generatedAt": "2026-11-23T09:26:32.084Z",
-      "ageHours": 24.7,
-      "stale": false,
+      "ageHours": 48.7,
+      "stale": true,
       "endpoints": [
         "calendar",
         "draft",
